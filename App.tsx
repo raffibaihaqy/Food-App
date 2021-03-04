@@ -10,6 +10,10 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { HomeScreen } from './src/screens/HomeScreen';
+import { SearchBar } from './src/components';
+import { SearchScreen } from './src/screens/SearchScreen';
+import { RestaurantScreen } from './src/screens/RestaurantScreen';
+import { FoodDetailScreen } from './src/screens/FoodDetailScreen';
 
 const switchNavigator = createSwitchNavigator({
 
@@ -31,7 +35,10 @@ const switchNavigator = createSwitchNavigator({
       //Home tab icon
       home: {
         screen: createStackNavigator({
-          HomePage: HomeScreen
+          HomePage: HomeScreen,
+          SearchPage: SearchScreen,
+          RestaurantPage: RestaurantScreen,
+          FoodDetailPage: FoodDetailScreen
         },{
           defaultNavigationOptions: {
             headerShown: false,

@@ -1,13 +1,18 @@
 import React, {useEffect, useState} from 'react'
 import {View, StyleSheet, Text, Dimensions, Image} from 'react-native'
 import {connect} from 'react-redux'
-import { onAvailability, UserState, ApplicationState, ShoppingState} from '../redux'
+import {useNavigation} from '../utils'
+import { ButtonWithIcon, CategoryCard, SearchBar, RestaurantCard} from '../components'
+import { onAvailability, onSearchFoods,UserState, ApplicationState, ShoppingState, Restaurant, FoodModel} from '../redux'
+import { NavigationEvents } from 'react-navigation'
+import { FlatList, ScrollView } from 'react-native-gesture-handler'
 
 
 interface HomeProps{
     userReducer: UserState,
     shoppingReducer: ShoppingState,
-    onAvailability: Function
+    onAvailability: Function,
+    onSearchFoods: Function
 }
 
 
@@ -15,14 +20,26 @@ export const _HomeScreen: React.FC<HomeProps> = (props) => {
 
     const {location} = props.userReducer
     const {availability} = props.shoppingReducer
+    const {navigate} = useNavigation()
 
     const {categories, foods, restaurants} = availability
 
-    console.log(foods)
-
     useEffect(() => {
         props.onAvailability(location.postalCode)
+        setTimeout(() => {
+            props.onSearchFoods(location.postalCode)
+        }, 1000)
+
     }, [])
+
+
+    const onTapRestaurant = (item: Restaurant) => {
+        navigate('RestaurantPage', { restaurant: item })
+    }
+
+    const onTapFood = (item: FoodModel) => {
+        navigate('FoodDetailPage', { food: item })
+    }
     
 
     return(
@@ -32,15 +49,47 @@ export const _HomeScreen: React.FC<HomeProps> = (props) => {
                     <Text>{`${location.name}, ${location.street}, ${location.city}`}</Text>
                     <Text>Edit</Text>
                 </View>
-                <View style={{flex: 8, backgroundColor: 'green'}}>
-                    <Text>Seacrh Bar</Text>
+                <View style={{display: 'flex', flex: 4, justifyContent: 'space-around', flexDirection: 'row', alignItems: 'center', marginLeft: 4}}>
+                    <SearchBar didTouch={() => {
+                        navigate('SearchPage')
+                    }} onTextChange={() => {}}/>
+                    <ButtonWithIcon onTap={() => {}} icon={require('../images/hambar.png')} width={50} height={40}></ButtonWithIcon>
                 </View>
             </View>
+
             <View style={styles.body}>
-                <Text>Home Screen</Text>
-            </View>
-            <View style={styles.footer}>
-                <Text>Footer</Text>
+                    <ScrollView>
+                        <FlatList 
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            data={categories}
+                            renderItem={({item}) => <CategoryCard item={item} onTap={() => { alert('Category tapped') }}/>}
+                            keyExtractor={(item) => `${item.id}`}
+                        />
+                        <View>
+                            <Text style={{fontSize: 25, fontWeight: '600', color: '#f15b5d', marginLeft: 20}}>Top Restaurant</Text>
+                        </View>
+                        <FlatList 
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            data={restaurants}
+                            renderItem={({item}) => <RestaurantCard item={item} onTap={onTapRestaurant}/>}
+                            keyExtractor={(item) => `${item._id}`}
+                        />
+
+                        <View>
+                            <Text style={{fontSize: 25, fontWeight: '600', color: '#f15b5d', marginLeft: 20}}>30 Minutes Foods</Text>
+                        </View>
+                        <FlatList 
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            data={foods}
+                            renderItem={({item}) => <RestaurantCard item={item} onTap={onTapFood}/>}
+                            keyExtractor={(item) => `${item._id}`}
+                        />
+
+                    </ScrollView>
+
             </View>
         </View>
     )
@@ -49,22 +98,16 @@ export const _HomeScreen: React.FC<HomeProps> = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'green'
+        backgroundColor: '#FFF'
     },
     navigation: {
         flex: 2,
-        backgroundColor: 'red'
     },
     body: {
         flex: 9,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'yellow'
     },
-    footer: {
-        flex: 1,
-        backgroundColor: 'cyan'
-    }
 })
 
 const mapToStateProps = (state: ApplicationState) => ({
@@ -72,6 +115,6 @@ const mapToStateProps = (state: ApplicationState) => ({
     shoppingReducer: state.shoppingReducer
 })
 
-const HomeScreen = connect(mapToStateProps, { onAvailability })(_HomeScreen)
+const HomeScreen = connect(mapToStateProps, { onAvailability, onSearchFoods })(_HomeScreen)
 
 export { HomeScreen }
