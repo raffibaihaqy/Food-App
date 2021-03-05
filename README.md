@@ -2,4 +2,4 @@
 Landing & Home Page (Sementara)
 
 
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/42157989/109630383-6e7de080-7b77-11eb-86ef-a6bf52e05900.gif)
+![ezgif com-gif-maker (1) (1)](https://user-images.githubusercontent.com/42157989/110114996-06820100-7de8-11eb-91a0-11a803d5a7e2.gif)
