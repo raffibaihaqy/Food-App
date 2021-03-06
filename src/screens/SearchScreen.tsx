@@ -47,7 +47,10 @@ const _SearchScreen: React.FC<SearchScreenProps> = (props) => {
                     })
                     : availableFoods
                 }
-                renderItem={({item}) => <FoodCard onTap={onTapFood} item={checkExistence(item, Cart)} onUpdateCart={() => {}} />}
+                renderItem={({item}) => 
+                <FoodCard onTap={onTapFood} 
+                item={checkExistence(item, Cart)} 
+                onUpdateCart={props.onUpdateCart} />}
                 keyExtractor={(item) => `${item._id}`}
             />
         </View>

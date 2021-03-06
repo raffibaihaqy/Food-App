@@ -13,13 +13,13 @@ const ButtonAddremove: React.FC<ButtonProps> = ({ onAdd, unit, onRemove }) => {
     if(unit > 0){
         return (
             <View style={styles.optionsView}>
-                <TouchableOpacity style={styles.btnPlusMinus} onPress={() => onAdd()}>
+                <TouchableOpacity style={styles.btnPlusMinus} onPress={() => onRemove()}>
                     <Text style={{fontSize: 20, color: '#f14b5d'}}> -</Text>
                 </TouchableOpacity>
                 <View style={{display: 'flex', justifyContent: 'center', alignItems:'center', width:20}}>
                     <Text style={{ fontSize: 25, fontWeight: '600', textAlign: 'center', color: '#f14b5d' }}>{unit}</Text>
                 </View>
-                <TouchableOpacity style={styles.btnPlusMinus} onPress={() => onRemove()}>
+                <TouchableOpacity style={styles.btnPlusMinus} onPress={() => onAdd()}>
                     <Text style={{fontSize: 20, color: '#f14b5d'}}> +</Text>
                 </TouchableOpacity>
             </View>

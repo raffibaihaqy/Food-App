@@ -2,19 +2,25 @@ import React, {useState, useEffect} from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, TextInput, Image, ImageBackground, Dimensions} from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import { ButtonWithIcon, FoodCard } from '../components'
-import { FoodModel } from '../redux'
+import { ApplicationState, FoodModel, UserState, onUpdateCart } from '../redux'
+import {connect} from 'react-redux'
 
 import {useNavigation} from '../utils/useNavigation'
+import { checkExistence } from '../utils'
+
 
 interface FoodDetailProps{
+    userReducer: UserState
+    onUpdateCart: Function
     navigation: { getParam: Function, goBack: Function }
 }
 
-const FoodDetailScreen: React.FC<FoodDetailProps> = (props) => {
+const _FoodDetailScreen: React.FC<FoodDetailProps> = (props) => {
 
     const {getParam, goBack} = props.navigation
     const food = getParam('food') as FoodModel
     const { navigate } = useNavigation()
+    const {Cart} = props.userReducer
 
 
     return (<View style={styles.container}>
@@ -36,7 +42,7 @@ const FoodDetailScreen: React.FC<FoodDetailProps> = (props) => {
                     <Text>{food.description}</Text>
                 </View>
                 <View style={{height: 120}}>
-                    <FoodCard item={food} onTap={()=> {}} onUpdateCart={() => {}}></FoodCard>
+                    <FoodCard item={checkExistence(food, Cart)} onTap={()=> {}} onUpdateCart={props.onUpdateCart}></FoodCard>
                 </View>
             
 
@@ -63,5 +69,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
     }
 })
+
+const mapToStateProps = (state: ApplicationState) => ({
+    shoppingReducer: state.shoppingReducer,
+    userReducer: state.userReducer
+})
+
+const FoodDetailScreen = connect(mapToStateProps, { onUpdateCart })(_FoodDetailScreen)
+
 
 export {FoodDetailScreen}

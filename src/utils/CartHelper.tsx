@@ -1,4 +1,4 @@
-import { FoodModel } from "../redux";
+import { FoodModel } from "../redux"
 
 const checkExistence = (item: FoodModel, Cart: [FoodModel]) => {
 

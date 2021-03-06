@@ -2,19 +2,25 @@ import React, {useState, useEffect} from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, TextInput, Image, ImageBackground, Dimensions} from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import { ButtonWithIcon, FoodCard } from '../components'
-import { FoodModel, Restaurant } from '../redux'
+import { connect } from 'react-redux'
+import { ApplicationState, FoodModel, Restaurant, onUpdateCart, UserState } from '../redux'
+import { checkExistence } from '../utils'
 
 import {useNavigation} from '../utils/useNavigation'
 
+
 interface RestaurantProps{
+    userReducer: UserState
+    onUpdateCart: Function
     navigation: { getParam: Function, goBack: Function }
 }
 
-const RestaurantScreen: React.FC<RestaurantProps> = (props) => {
+const _RestaurantScreen: React.FC<RestaurantProps> = (props) => {
 
     const {getParam, goBack} = props.navigation
     const restaurant = getParam('restaurant') as Restaurant
     const { navigate } = useNavigation()
+    const { Cart } = props.userReducer
 
     const onTapFood = (item: FoodModel) => {
         navigate('FoodDetailPage', {food: item})
@@ -38,7 +44,7 @@ const RestaurantScreen: React.FC<RestaurantProps> = (props) => {
                 <FlatList
                     showsVerticalScrollIndicator={false}
                     data={restaurant.foods}
-                    renderItem={({item}) => <FoodCard item={item} onTap={onTapFood} onUpdateCart={() => {}}></FoodCard>}
+                    renderItem={({item}) => <FoodCard item={checkExistence(item, Cart)} onTap={onTapFood} onUpdateCart={props.onUpdateCart}></FoodCard>}
                     keyExtractor={(item) => `${item._id}`}
                 />
             </View>
@@ -64,5 +70,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF'
     }
 })
+
+const mapToStateProps = (state: ApplicationState) => ({
+    shoppingReducer: state.shoppingReducer,
+    userReducer: state.userReducer
+})
+
+const RestaurantScreen = connect(mapToStateProps, { onUpdateCart })(_RestaurantScreen)
 
 export {RestaurantScreen}
