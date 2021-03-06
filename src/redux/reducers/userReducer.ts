@@ -49,6 +49,10 @@ const UserReducer = (state: UserState = initialState, action: UserAction) => {
                     Cart: [...state.Cart, action.payload]
                 }
             }
+        case 'ON_USER_LOGIN':
+            console.log('User login....')
+            console.log(action.payload)
+        return state
         
         default:
             return state

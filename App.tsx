@@ -14,6 +14,8 @@ import { SearchBar } from './src/components';
 import { SearchScreen } from './src/screens/SearchScreen';
 import { RestaurantScreen } from './src/screens/RestaurantScreen';
 import { FoodDetailScreen } from './src/screens/FoodDetailScreen';
+import { CartScreen } from './src/screens/CartScreen';
+import { LoginScreen } from './src/screens/LoginScreen';
 
 const switchNavigator = createSwitchNavigator({
 
@@ -66,7 +68,13 @@ const switchNavigator = createSwitchNavigator({
 
       Cart: {
         screen: createStackNavigator({
-          CartPage: HomeScreen
+          CartPage: CartScreen,
+          LoginPage: LoginScreen
+        },
+        {
+          defaultNavigationOptions: {
+            headerShown: false,
+          }
         }),
         navigationOptions: {
           tabBarIcon: ({ focused, tintColor }) => {
@@ -78,7 +86,8 @@ const switchNavigator = createSwitchNavigator({
 
       Account: {
         screen: createStackNavigator({
-          AccountPage: HomeScreen
+          AccountPage: HomeScreen,
+          LoginPage: LoginScreen
         }),
         navigationOptions: {
           tabBarIcon: ({ focused, tintColor }) => {

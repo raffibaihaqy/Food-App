@@ -3,31 +3,31 @@ import { exp } from 'react-native-reanimated'
 
 //category
 export interface Category{
-    id: String,
-    title: String,
-    icon: String
+    id: string,
+    title: string,
+    icon: string
 }
 
 //food model
 export interface FoodModel{
-    _id: String,
-    name: String,
-    description: String,
-    category: String,
-    price: Number,
-    readyTime: Number,
-    images: [String],
+    _id: string,
+    name: string,
+    description: string,
+    category: string,
+    price: number,
+    readyTime: number,
+    images: [string],
     unit: number
 }
 
 //restaurant model
 export interface Restaurant{
-    _id: String,
-    name: String,
-    foodType: String,
-    address: String,
-    phone: String,
-    images: [String],
+    _id: string,
+    name: string,
+    foodType: string,
+    address: string,
+    phone: string,
+    images: [string],
     foods: [FoodModel]
 }
 
@@ -40,16 +40,16 @@ export interface FoodAvailability{
 //todo : Modify later
 //User Model
 export interface UserModel{
-    firstName: String,
-    lastName: String,
-    contactNumber: String,
-    token: String
+    firstName: string,
+    lastName: string,
+    contactNumber: string,
+    token: string
 }
 
 export interface UserState{
     user: UserModel,
     location: LocationGeocodedAddress,
-    error: String | undefined,
+    error: string | undefined,
     Cart: [FoodModel]
 }
 

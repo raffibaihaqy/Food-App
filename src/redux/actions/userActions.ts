@@ -21,7 +21,13 @@ export interface UpdateCartAction {
     payload: FoodModel
 }
 
-export type UserAction = UpdateLocationAction | UserErrorAction | UpdateCartAction
+export interface UserLoginAction {
+    readonly type: 'ON_USER_LOGIN',
+    payload: string
+}
+
+
+export type UserAction = UpdateLocationAction | UserErrorAction | UpdateCartAction | UserLoginAction
 
 
 //User actions trigger from components
@@ -59,6 +65,79 @@ export const onUpdateCart = (item: FoodModel) => {
                 type: 'ON_UPDATE_CART',
                 payload: item
             })
+
+    }
+}
+
+
+export const onUserLogin = (email: string, password: string) => {
+    
+    return async ( dispatch: Dispatch<UserAction> ) => {
+
+        try {
+            const response = await axios.post<string>(`${BASE_URL}user/login`, {
+                email,
+                password
+            })
+
+            // console.log(response)
+
+            if(!response){
+                dispatch({
+                    type: 'ON_USER_ERROR',
+                    payload: 'User Login error'
+                })
+            }else{
+                //save our location in local storage
+            dispatch({
+                type: 'ON_USER_LOGIN',
+                payload: response.data
+                })
+            }
+
+        } catch (error) {
+            dispatch({
+                type: 'ON_USER_ERROR',
+                payload: error
+            })
+        }
+
+    }
+}
+
+
+export const onUserSignUp = (email: string, phone: string, password: string) => {
+    
+    return async ( dispatch: Dispatch<UserAction> ) => {
+
+        try {
+            const response = await axios.post<string>(`${BASE_URL}user/signup`, {
+                email,
+                phone,
+                password
+            })
+
+            console.log(response)
+
+            if(!response){
+                dispatch({
+                    type: 'ON_USER_ERROR',
+                    payload: 'User Login error'
+                })
+            }else{
+                //save our location in local storage
+            dispatch({
+                type: 'ON_USER_LOGIN',
+                payload: response.data
+                })
+            }
+
+        } catch (error) {
+            dispatch({
+                type: 'ON_USER_ERROR',
+                payload: error
+            })
+        }
 
     }
 }
