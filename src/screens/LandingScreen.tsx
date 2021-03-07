@@ -26,8 +26,6 @@ const _LandingScreen: React.FC<LandingProps> = (props) => {
 
     const [displayAddress, setDisplayAddress] = useState("Waiting for Current Location")
 
-    console.log(respo)
-
     useEffect(() => {
 
         (async () => {

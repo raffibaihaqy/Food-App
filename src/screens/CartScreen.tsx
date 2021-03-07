@@ -24,7 +24,7 @@ const _CartScreen: React.FC<CartScreenProps> = (props) => {
 
     const {availableFoods} = props.shoppingReducer
 
-    const { Cart } = props.userReducer 
+    const { Cart, user } = props.userReducer 
 
     const onTapFood = (item: FoodModel) => {
         navigate('FoodDetailPage', { food: item })
@@ -37,9 +37,14 @@ const _CartScreen: React.FC<CartScreenProps> = (props) => {
     const onCalculateAmount = () => {
 
         let total = 0
-        Cart.map(food => {
-            total += food.price * food.unit
-        })
+
+        if(Array.isArray(Cart)){
+            
+            Cart.map(food => {
+                total += food.price * food.unit
+            })
+
+        }
 
         setTotalAmount(total)
 
@@ -47,7 +52,17 @@ const _CartScreen: React.FC<CartScreenProps> = (props) => {
 
 
     const onValidateOrder = () => {
-        navigate('LoginPage')
+        
+        if(!user.verified){
+
+            navigate('LoginPage')
+
+        }else{
+
+            console.log('success')
+
+        }
+
     }
 
 
@@ -111,7 +126,8 @@ const styles = StyleSheet.create({
     footer: {
         flex: 3,
         padding: 10,
-        paddingTop: 150
+        paddingTop: 150,
+        backgroundColor: '#F2F2F2'
     },
     amountView: {
         display: 'flex',
